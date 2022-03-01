@@ -2,6 +2,10 @@ from socket import *
 import requests
 import json
 from flask import Flask, request, Response
+import os
+
+PATH = "./address_map.json"
+
 app = Flask(__name__)
 
 @app.route('/home')
@@ -28,9 +32,15 @@ def AS():
 #             dictionary = json.load(outfile)
 #         DNS_response = dictionary[m["NAME"]]
 #         dns_object = json.dumps(DNS_response)
-#         serverSocket.sendto(dns_object.encode(),clientAddress)   
+#         serverSocket.sendto(dns_object.encode(),clientAddress)
+    file = 'address_map.json'
+    if not os.path.exists(file):
+        os.system(r'touch address_map.json')
+        file = 'address_map.json'
+            
     if request.method == 'GET':
         key = request.args.get('name')
+           
         with open(file, 'r') as json_file:
             data = json.load(json_file)
             if key not in data:
